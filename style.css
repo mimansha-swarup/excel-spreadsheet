@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 *{
+  box-sizing: border-box;
   --header-color: #F9FBFD;
-  --black-color: #444746;
+  --action-bar-color: #EDF2FA;
+  --black-color: #3d3f3e;
+  --dark-grey-color: #747775;
   --white-color: #FFFFFF;
   --border-color: #F0F0F0;
   --primary-color: #34A853;
@@ -9,40 +13,161 @@
 body{
   padding: 0;
   margin: 0;
+  color: var(--black-color);
+  background-color: var(--white-color);
+  font-family: 'Open Sans', sans-serif;
+  
 }
+select, option {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.justify-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex{
+  display: flex;
+
+}
+/* ---------- Page Action CSS ---------------- */
 .page-action-cont{
   background-color: var(--header-color);
   height: 3rem;
   width: 100vw;
   display: flex;
-  color: var(--black-color);
-  /* padding-left: .5rem; */
 }
 .page-action-cont .page-action{
-  padding: 1rem 1.5rem;
+  padding: 1rem ;
   cursor: pointer;
 }
 .page-action-cont .page-action:hover{
   background-color: var(--primary-color);
   color: var(--header-color);
 }
+/* ---------- Cell Action CSS ---------------- */
 .cell-action-cont{
-  background-color: yellowgreen;
+  background-color: var(--action-bar-color);
   height: 3rem;
   width: 100vw;
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
 }
-.address-action-cont{
-  background-color: slateblue;
-  height: 3rem;
+.cell-action-cont > *{
+  margin-left: 1rem;
+}
+.cell-action-cont > select{
+  padding: .25rem .5rem;
+  border-radius:  4px;
+  border: 1px solid var(--border-color);
+  outline: none;
+}
+
+/* ---------- Address Action CSS ---------------- */
+.formula-action-cont{
+  background-color: var(--action-bar-color);
+  display: flex;
+  /* align-items: center; */
+  align-items: flex-start;
+  height: 2.5rem;
   width: 100vw;
 }
+.formula-action-cont > input{
+  border: none;
+  outline:none;
+  padding: .25rem .5rem;
+  border-radius:  8px;
+  border: 2px solid var(--border-color);
+  height: 90%;
+}
+.formula-action-cont > img{
+  height: 50%;
+  margin-right: .5rem;
+  padding-left: .5rem;
+  border-left: 2px solid var(--black-color);
+  align-self: center;
+}
+.address-bar{
+  width: 5rem;
+  margin: 0 .5rem 0 .25rem ;
+}
+.formula-bar{
+width: calc(100vw - 8.5rem);
+}
+/* ---------- Grid Action CSS ---------------- */
 .cell-cont{
   background-color: var(--white-color);
-  height: calc(100vh - 3rem - 3rem - 3rem - 3rem);
+  height: calc(100vh - 3rem - 2.5rem - 3rem - 3rem);
   width: 100vw;
+  position: relative;
+  overflow: auto;
 }
-.sheet-cont{
-  background-color: salmon;
+.intersection-box{
+  background-color: var(--dark-grey-color);
+  width: 2rem;
+  height: 2rem;
+  position: fixed;
+  left:0;
+  z-index: 5;
+
+}
+.cell-col-cont{
+  width: 2rem;
+  position: sticky;
+  top:2rem;
+  left:0;
+  right: 2rem;;
+  background-color:  var(--white-color);
+  z-index: 1;
+  font-size: 14px;
+}
+.cell-col{
+  height: 2rem;
+  width: 2rem;
+  border: 1px solid var(--border-color);
+  text-align: center;
+
+}
+.cell-row-cont{
+  height: 2rem;
+  display: flex;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  background-color: var(--white-color);
+}
+.cell-row{
+  text-align: center;
+  border: 1px solid var(--border-color);
+  height: 2rem;
+  width : 5rem;
+}
+.sheet-cells{
+  position: absolute;
+  top: 0;
+  left: 2rem;
+
+}
+/* ---------- Sheet CSS ---------------- */
+.sheet-action-cont{
+  background-color: var(--action-bar-color);
   height: 3rem;
   width: 100vw;
+  display: flex;
+  align-items: center;
+}
+.sheet-cont{
+  display: flex;
+  align-items: center;
+  height: 80%;
+  width: fit-content;
+  margin: 0  1.5rem;
+}
+.sheet{
+  padding : .25rem .75rem;
+  border-bottom: 3px solid var(--primary-color);
+  color: var(--primary-color);
+
 }

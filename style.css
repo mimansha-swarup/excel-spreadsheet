@@ -29,7 +29,10 @@ select, option {
 }
 .flex{
   display: flex;
-
+}
+.material-symbols-outlined{
+  cursor: pointer;
+  border-radius: 3.5px;
 }
 /* ---------- Page Action CSS ---------------- */
 .page-action-cont{
@@ -138,11 +141,15 @@ width: calc(100vw - 8.5rem);
   top: 0;
   background-color: var(--white-color);
 }
-.cell-row{
-  text-align: center;
+.cell, .cell-row{
+  outline: none;
   border: 1px solid var(--border-color);
   height: 2rem;
   width : 5rem;
+}
+.cell{
+  font-family: monospace;
+  font-size: 12px;
 }
 .sheet-cells{
   position: absolute;

@@ -5,7 +5,7 @@ const cellRowCont = document.querySelector(".cell-row-cont")
 const cellColCont = document.querySelector(".cell-col-cont")
 const cellsCont = document.querySelector(".sheet-cells")
 const addressBar = document.querySelector(".address-bar")
-console.log(addressBar);
+
 
 for (let i = 0; i < rows; i++) {
   const cellCol = document.createElement("div")
@@ -25,8 +25,10 @@ for (let i = 0; i < rows; i++) {
   rowCont.setAttribute("class", "flex")
   for (let j = 0; j < columns; j++) {
     const cell  =  document.createElement("div")
-    cell.setAttribute("class", "cell-row justify-center")
+    cell.setAttribute("class", "cell")
     cell.setAttribute("contentEditable", true)
+    cell.setAttribute("rowId", i)
+    cell.setAttribute("columnId", j)
     addCellListener(cell, i, j)
     rowCont.appendChild(cell)    
   }
@@ -37,5 +39,9 @@ function addCellListener (cell,rowAddress,columnAsciiAddress){
   cell.addEventListener("click", () =>{
     addressBar.value = `${String.fromCharCode(65 + columnAsciiAddress)}${rowAddress+1}`
   })
-
 }
+
+const firstCell = document.querySelector(".cell")
+firstCell.click()
+firstCell.focus()
+console.log(firstCell);

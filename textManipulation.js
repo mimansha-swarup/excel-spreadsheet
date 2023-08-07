@@ -19,13 +19,14 @@ for (let i = 0; i < rows; i++) {
       alignment: "left",
       fontFamily: "monospace",
       fontSize: "12",
+      value: '',
+      formulaBar: '',
     };
     rowCellsStorage.push(cellStorageObject);
   }
   cellsStorage.push(rowCellsStorage);
 }
 
-console.log("cellStorage", cellsStorage);
 
 // ---------------------Cell Manipulation ------------------
 const boldElement = document.querySelector(".bold");
@@ -91,7 +92,6 @@ alignElements.forEach((alignElement) => {
   alignElement.addEventListener("click", (event) => {
     const [cellElement, cellStorageRef] = getCell(addressBar.value);
     cellStorageRef.alignment = event.target.innerText.split("_")[2];
-    console.log(cellStorageRef.alignment);
     cellElement.style.textAlign = cellStorageRef.alignment;
     updateAlignAction(cellStorageRef.alignment);
 
@@ -145,6 +145,7 @@ function updateCellAction(cell) {
     fontFamilyElement.value = cellStorageRef.fontFamily;
     fontSizeElement.value = cellStorageRef.fontSize;
     updateAlignAction(cellStorageRef.alignment)
+    formulaBarElement.value = cellStorageRef.formulaBar
   });
 }
 

@@ -1,4 +1,3 @@
-
 for (let i = 0; i < rows; i++) {
   for (let j = 0; j < columns; j++) {
     const cellElement = document.querySelector(
@@ -16,24 +15,91 @@ const formulaBarElement = document.querySelector(`.formula-bar`);
 
 formulaBarElement.addEventListener("keydown", (e) => {
   if (formulaBarElement.value && e.key === "Enter") {
-    const evaluatedValue = evaluateExpression(formulaBarElement.value)
-    
-    //update Ui and DB
-    setCellAndDB(evaluatedValue, formulaBarElement.value)
+    const evaluatedValue = evaluateExpression(formulaBarElement.value);
 
+    const address = addressBar.value;
+    const [, activeCellProp] = getCell(address);
+    // when current formula is different breaking Parent child relationship
+    if (activeCellProp.formula !== evaluatedValue)
+      removeChildFromParent(formulaBarElement.value);
+
+    //update Ui and DB
+    console.log("activeCellProp",address,  activeCellProp);
+    setCellAndDB(evaluatedValue, formulaBarElement.value, address);
+    addChildToParent(formulaBarElement.value);
+    updateChildrenOnParentChanges(address)
   }
 });
 
-function evaluateExpression(expression){
-  return eval(expression)
+function updateChildrenOnParentChanges(parentAddress) {
+  const [, parentCellProps] = getCell(parentAddress)
+  console.log("updateChildrenOnParentChanges", parentAddress, parentCellProps);
+  children =  parentCellProps.children
+  for (let i = 0; i < children?.length; i++) {
+    const childAddress= children[i]
+    const [, childCellProps] = getCell(childAddress)
+    console.log("childCellProps", childCellProps);
+    const formula = childCellProps.formulaBar
+    const evaluatedValue = evaluateExpression(formula);
+    setCellAndDB(evaluatedValue, formula, childAddress);
 
-} 
+    // recursively calling to check childs child
 
-function setCellAndDB(evaluatedValue, expression){
-  const [cell,cellProps]= getCell(addressBar.value)
-  cell.innerText = evaluatedValue //UI
+    updateChildrenOnParentChanges(childAddress)
+
+    
+  }
+}
+function addChildToParent(formula) {
+  const childAddress = addressBar.value;
+  const encodedFormula = formula.split(" ");
+  for (let idx = 0; idx < encodedFormula.length; idx++) {
+    if (
+      encodedFormula[idx].charCodeAt(0) >= 65 &&
+      encodedFormula[idx].charCodeAt(0) <= 90
+    ) {
+      const [, parentCellProps] = getCell(encodedFormula[idx]);
+      parentCellProps.children.push(childAddress);
+    }
+  }
+}
+function removeChildFromParent(formula) {
+  const childAddress = addressBar.value;
+  const encodedFormula = formula.split(" ");
+  for (let idx = 0; idx < encodedFormula.length; idx++) {
+    if (
+      encodedFormula[idx].charCodeAt(0) >= 65 &&
+      encodedFormula[idx].charCodeAt(0) <= 90
+    ) {
+      const [, parentCellProps] = getCell(encodedFormula[idx]);
+      const childIndex = parentCellProps.children.indexOf(childAddress);
+      if (childIndex >= 0) {
+        parentCellProps.children.splice(childIndex, 1);
+      }
+    }
+  }
+}
+
+function evaluateExpression(expression) {
+  const encodedFormula = expression.split(" ");
+  for (let idx = 0; idx < encodedFormula.length; idx++) {
+    if (
+      encodedFormula[idx].charCodeAt(0) >= 65 &&
+      encodedFormula[idx].charCodeAt(0) <= 90
+    ) {
+      const [, cellProps] = getCell(encodedFormula[idx]);
+      encodedFormula[idx] = cellProps.value;
+    }
+  }
+  const decodeFormula = encodedFormula.join(" ");
+  return eval(decodeFormula);
+}
+
+function setCellAndDB(evaluatedValue, expression, address) {
+  const [cell, cellProps] = getCell(address);
+  cell.innerText = evaluatedValue; //UI
 
   // DB
-  cellProps.value = evaluatedValue
-  cellProps.formulaBar = expression
+  cellProps.value = evaluatedValue;
+  cellProps.formulaBar = expression;
 }

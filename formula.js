@@ -24,7 +24,6 @@ formulaBarElement.addEventListener("keydown", (e) => {
       removeChildFromParent(formulaBarElement.value);
 
     //update Ui and DB
-    console.log("activeCellProp",address,  activeCellProp);
     setCellAndDB(evaluatedValue, formulaBarElement.value, address);
     addChildToParent(formulaBarElement.value);
     updateChildrenOnParentChanges(address)
@@ -33,12 +32,10 @@ formulaBarElement.addEventListener("keydown", (e) => {
 
 function updateChildrenOnParentChanges(parentAddress) {
   const [, parentCellProps] = getCell(parentAddress)
-  console.log("updateChildrenOnParentChanges", parentAddress, parentCellProps);
   children =  parentCellProps.children
   for (let i = 0; i < children?.length; i++) {
     const childAddress= children[i]
     const [, childCellProps] = getCell(childAddress)
-    console.log("childCellProps", childCellProps);
     const formula = childCellProps.formulaBar
     const evaluatedValue = evaluateExpression(formula);
     setCellAndDB(evaluatedValue, formula, childAddress);

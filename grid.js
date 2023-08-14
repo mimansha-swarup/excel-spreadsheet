@@ -44,4 +44,3 @@ function addCellListener (cell,rowAddress,columnAsciiAddress){
 const firstCell = document.querySelector(".cell")
 firstCell.click()
 firstCell.focus()
-console.log(firstCell);

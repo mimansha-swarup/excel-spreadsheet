@@ -8,6 +8,11 @@ for (let i = 0; i < rows; i++) {
       // Storing data in db
       const [activeCell, cellProps] = getCell(address);
       cellProps.value = activeCell.innerText;
+      if(!cellProps.formulaBar){ 
+        cellProps.formulaBar = activeCell.innerText
+      }else{
+        cellProps.formulaBar =""
+      }
     });
   }
 }
@@ -23,28 +28,66 @@ formulaBarElement.addEventListener("keydown", (e) => {
     if (activeCellProp.formula !== evaluatedValue)
       removeChildFromParent(formulaBarElement.value);
 
+    addChildToGraphComponent(formulaBarElement.value, address);
+    if(isGraphCyclic()){
+      removeChildFromGraphComponent(formulaBarElement.value);
+      alert("Formula is cyclic")
+      return;
+    }
     //update Ui and DB
     setCellAndDB(evaluatedValue, formulaBarElement.value, address);
     addChildToParent(formulaBarElement.value);
-    updateChildrenOnParentChanges(address)
+    updateChildrenOnParentChanges(address);
   }
 });
 
+function addChildToGraphComponent(formula, childAddress) {
+  const [childRowId, childColumnId] = getActivateCellIds(childAddress);
+  const encodedFormula = formula.split(" ");
+  for (let idx = 0; idx < encodedFormula.length; idx++) {
+    if (
+      encodedFormula[idx].charCodeAt(0) >= 65 &&
+      encodedFormula[idx].charCodeAt(0) <= 90
+    ) {
+      const [parentRowId, parentColumnId] = getActivateCellIds(
+        encodedFormula[idx]
+      );
+      graphMatrix[parentRowId][parentColumnId].push([
+        childRowId,
+        childColumnId,
+      ]);
+    }
+  }
+}
+function removeChildFromGraphComponent(formula) {
+  const encodedFormula = formula.split(" ");
+  for (let idx = 0; idx < encodedFormula.length; idx++) {
+    if (
+      encodedFormula[idx].charCodeAt(0) >= 65 &&
+      encodedFormula[idx].charCodeAt(0) <= 90
+    ) {
+      const [parentRowId, parentColumnId] = getActivateCellIds(
+        encodedFormula[idx]
+      );
+      graphMatrix[parentRowId][parentColumnId].pop();
+    }
+  }
+}
+
 function updateChildrenOnParentChanges(parentAddress) {
-  const [, parentCellProps] = getCell(parentAddress)
-  children =  parentCellProps.children
+  const [, parentCellProps] = getCell(parentAddress);
+  children = parentCellProps.children;
   for (let i = 0; i < children?.length; i++) {
-    const childAddress= children[i]
-    const [, childCellProps] = getCell(childAddress)
-    const formula = childCellProps.formulaBar
+    const childAddress = children[i];
+    const [, childCellProps] = getCell(childAddress);
+
+    const formula = childCellProps.formulaBar;
     const evaluatedValue = evaluateExpression(formula);
     setCellAndDB(evaluatedValue, formula, childAddress);
 
     // recursively calling to check childs child
 
-    updateChildrenOnParentChanges(childAddress)
-
-    
+    updateChildrenOnParentChanges(childAddress);
   }
 }
 function addChildToParent(formula) {

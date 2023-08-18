@@ -29,7 +29,7 @@ function isGraphCyclic() {
     for (let j = 0; j < columns; j++) {
       if( visited[i][j] === false){
         const res = dfsCycleDetection(graphMatrix, i, j, visited, dfsVisited);
-        if (res) return true; //cycle is there
+        if (res) return [i,j]; //cycle is there
       }
     }
   }
@@ -58,7 +58,7 @@ function dfsCycleDetection(
         neighborRowId,
         neighborColumnId,
         visited,
-        dfsVisited)
+        dfsVisited)        
         if(res) return res
       
     }

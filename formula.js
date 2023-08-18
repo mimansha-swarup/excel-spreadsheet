@@ -8,17 +8,17 @@ for (let i = 0; i < rows; i++) {
       // Storing data in db
       const [activeCell, cellProps] = getCell(address);
       cellProps.value = activeCell.innerText;
-      if(!cellProps.formulaBar){ 
-        cellProps.formulaBar = activeCell.innerText
-      }else{
-        cellProps.formulaBar =""
-      }
+      // if(!cellProps.formulaBar){ 
+      //   cellProps.formulaBar = activeCell.innerText
+      // }else{
+      //   cellProps.formulaBar =""
+      // }
     });
   }
 }
 const formulaBarElement = document.querySelector(`.formula-bar`);
 
-formulaBarElement.addEventListener("keydown", (e) => {
+formulaBarElement.addEventListener("keydown", async(e) => {
   if (formulaBarElement.value && e.key === "Enter") {
     const evaluatedValue = evaluateExpression(formulaBarElement.value);
 
@@ -29,11 +29,18 @@ formulaBarElement.addEventListener("keydown", (e) => {
       removeChildFromParent(formulaBarElement.value);
 
     addChildToGraphComponent(formulaBarElement.value, address);
-    if(isGraphCyclic()){
+     cycleResponse= isGraphCyclic()
+    if(cycleResponse){
+      let userResponse = confirm("Formula is cyclic, Do you want to TRACE?")
+      while(userResponse){
+        await cyclicPathTrace(graphMatrix, ...cycleResponse)
+        userResponse = confirm("Formula is cyclic, Do you want to TRACE?")
+      }
+      
       removeChildFromGraphComponent(formulaBarElement.value);
-      alert("Formula is cyclic")
       return;
     }
+
     //update Ui and DB
     setCellAndDB(evaluatedValue, formulaBarElement.value, address);
     addChildToParent(formulaBarElement.value);

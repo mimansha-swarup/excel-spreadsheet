@@ -1,32 +1,40 @@
 // ------------Storage ----------------
 
-const cellsStorage = [];
+const collectedCellsStorage = [];
+let cellsStorage = [];
 
 const defaultColor = "#3d3f3e";
 const defaultBgColor = "transparent";
 const activateColor = "#D3E3FD";
 const inActiveColor = "transparent";
 
-for (let i = 0; i < rows; i++) {
-  const rowCellsStorage = [];
-  for (let j = 0; j < columns; j++) {
-    const cellStorageObject = {
-      bold: false,
-      underline: false,
-      italic: false,
-      color: defaultColor,
-      bgColor: defaultColor,
-      alignment: "left",
-      fontFamily: "monospace",
-      fontSize: "12",
-      value: '',
-      formulaBar: '',
-      children: []
-    };
-    rowCellsStorage.push(cellStorageObject);
-  }
-  cellsStorage.push(rowCellsStorage);
+// To initialize first sheet
+{
+  const sheetAddButton = document.querySelector(".material-symbols-outlined.add-btn")
+  sheetAddButton.click()
 }
+
+
+// for (let i = 0; i < rows; i++) {
+//   const rowCellsStorage = [];
+//   for (let j = 0; j < columns; j++) {
+//     const cellStorageObject = {
+//       bold: false,
+//       underline: false,
+//       italic: false,
+//       color: defaultColor,
+//       bgColor: defaultColor,
+//       alignment: "left",
+//       fontFamily: "monospace",
+//       fontSize: "12",
+//       value: '',
+//       formulaBar: '',
+//       children: []
+//     };
+//     rowCellsStorage.push(cellStorageObject);
+//   }
+//   cellsStorage.push(rowCellsStorage);
+// }
 
 
 // ---------------------Cell Manipulation ------------------
@@ -147,6 +155,7 @@ function updateCellAction(cell) {
     fontSizeElement.value = cellStorageRef.fontSize;
     updateAlignAction(cellStorageRef.alignment)
     formulaBarElement.value = cellStorageRef.formulaBar
+    cell.innerText =  cellStorageRef.value
   });
 }
 

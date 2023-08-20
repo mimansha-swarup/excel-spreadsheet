@@ -11,6 +11,7 @@
 }
 
 body{
+  overflow: hidden;
   padding: 0;
   margin: 0;
   color: var(--black-color);
@@ -166,15 +167,52 @@ width: calc(100vw - 8.5rem);
   align-items: center;
 }
 .sheet-cont{
+  overflow-x: auto;
+  overflow-y: hidden;
   display: flex;
   align-items: center;
-  height: 80%;
+  height: 90%;
   width: fit-content;
+  max-width: 80%;
   margin: 0  1.5rem;
+  gap:  1rem;
+  animation: ease-in-out;
+  /* V duration timing-function delay iteration-count direction fill-mode;-timing-function: ease-in;// */
+
+  /* Quick on the way out */
+  transition: 0.2s;
+
 }
 .sheet{
   padding : .25rem .75rem;
   border-bottom: 3px solid var(--primary-color);
   color: var(--primary-color);
+  cursor: pointer;
 
+}
+
+.sheet-cont::-webkit-scrollbar {
+  height: 3.5px;
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #CDCDCD; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-grey-color); 
+  /* background:   */
 }

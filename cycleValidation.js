@@ -1,4 +1,5 @@
-const graphMatrix = [];
+const collectedGraphMatrix = [];
+let graphMatrix = [];
 
 for (let i = 0; i < rows; i++) {
   const graphCont = [];

@@ -8,11 +8,6 @@ for (let i = 0; i < rows; i++) {
       // Storing data in db
       const [activeCell, cellProps] = getCell(address);
       cellProps.value = activeCell.innerText;
-      // if(!cellProps.formulaBar){ 
-      //   cellProps.formulaBar = activeCell.innerText
-      // }else{
-      //   cellProps.formulaBar =""
-      // }
     });
   }
 }

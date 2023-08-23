@@ -216,3 +216,13 @@ width: calc(100vw - 8.5rem);
   background: var(--dark-grey-color); 
   /* background:   */
 }
+
+/* -----------Responsive--------------- */
+@media only screen and (max-width: 780px) {
+  .page-action-cont .page-action {
+    padding: 1rem .75rem;
+  }
+  .cell-action-cont{
+    overflow: auto;
+  }
+}

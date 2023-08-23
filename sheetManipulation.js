@@ -20,6 +20,7 @@ sheetAddButton.addEventListener(
     handleSheetActive(sheet)
     handleSheetRemove(sheet)
     sheet.click()
+    sheet.scrollIntoView()
 
   }
 )
@@ -103,6 +104,7 @@ function handleSheetActive(sheet) {
       handleSheetStorage(activeIndex)
       handleSheetProperties()
       handleSheetUI(sheet)
+      // selectedRange=[]
     }
   )
   

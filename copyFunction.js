@@ -3,6 +3,7 @@ cutElement = document.querySelector(".cut")
 pasteElement = document.querySelector(".paste")
 
 let ctrlKey = false
+
 document.addEventListener(
   "keydown" , (e) =>{
     ctrlKey = e.ctrlKey
@@ -55,9 +56,42 @@ function defaultSelectedCellUI(){
 
 let copyData =[]
 
+cutElement.addEventListener(
+  "click",
+  ()=>{
+    if(selectedRange.length <2) return
+    const [startRow,startCol,endRow,endCol] = selectedRange.flat()
+    for (let i = startRow; i <= endRow; i++) {
+      const copyRow =[]
+      for (let j = startCol; j <= endCol; j++) {
+        const cellElement = document.querySelector(
+          `.cell[rowId ="${i}"][columnId="${j}"]`
+        );
+         // DB
+         const cellStorageRef = cellsStorage[i][j];
+         copyRow.push({...cellStorageRef})
+        cellStorageRef.value = "";
+        cellStorageRef.bold = false;
+        cellStorageRef.underline = false;
+        cellStorageRef.italic = false;
+        cellStorageRef.color = defaultColor;
+        cellStorageRef.bgColor = defaultBgColor;
+        cellStorageRef.alignment = "left";
+        cellStorageRef.fontFamily = "monospace";
+        cellStorageRef.fontSize = "12";
+        
+        cellElement.click()
+       
+      }
+      copyData.push(copyRow)
+    }
+    defaultSelectedCellUI()
+  }
+)
 copyElement.addEventListener(
   "click",
   ()=>{
+    if(selectedRange.length <2) return
     const [startRow,startCol,endRow,endCol] = selectedRange.flat()
     for (let i = startRow; i <= endRow; i++) {
       const copyRow =[]
@@ -73,7 +107,6 @@ copyElement.addEventListener(
 pasteElement.addEventListener(
   "click",
   () =>{
-    console.log("rest", selectedRange, copyData);
     const [currentRow, currentCol] =  getActivateCellIds(addressBar.value)
     const rowDiff = Math.abs(selectedRange[0][0] -  selectedRange[1][0] )
     const colDiff = Math.abs(selectedRange[0][1] -  selectedRange[1][1] )

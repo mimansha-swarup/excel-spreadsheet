@@ -140,6 +140,13 @@ function updateCellAction(cell) {
   cell.addEventListener("click", () => {
     const [rowId, columnId] = getActivateCellIds(addressBar.value);
     const cellStorageRef = cellsStorage[rowId][columnId];
+    // Update UI TODO: 
+    cell.style.fontWeight = cellStorageRef.bold ? "bold" : "normal";
+    cell.style.fontStyle = cellStorageRef.italic ? "italic" : "normal";
+    cell.style.textDecoration = cellStorageRef.underlined
+    cell.style.fontSize = cellStorageRef.fontSize + "px";
+    cell.style.fontFamily = cellStorageRef.fontFamily;
+    cell.style.textAlign = cellStorageRef.alignment;
 
     // Update cell Action
     boldElement.style.backgroundColor = cellStorageRef.bold
